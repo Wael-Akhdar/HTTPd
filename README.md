@@ -57,12 +57,20 @@ bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemo
 ```
 Expected behavior: HTTP/1.1 200 OK response displaying the source code of main.c. The connection closes cleanly.
 
+5. Test the HTTP GET request:
 
+   ```
+   curl -v [http://127.0.0.1:8080/src/main.c](http://127.0.0.1:8080/src/main.c)
+   ```
+Expected behavior: HTTP/1.1 200 OK response displaying the source code of main.c. The connection closes cleanly.
+   
 6. Stop or Restart the daemon:
 
-7. # To stop the server (sends SIGINT, removes test.pid)
+```
+# To stop the server (sends SIGINT, removes test.pid)
 bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon stop
 
 # To restart the server (executes stop then start sequentially)
 bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon restart
+```
 
