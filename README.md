@@ -29,20 +29,40 @@
 
 ## 🎯 How to test the project?
 
-A pre-compiled version of the server is available for testing.
+A pre-compiled version of the server and its configuration wrapper are available for testing. Note that the C binary does not parse `.conf` files directly; it relies on a provided Bash wrapper script.
 
 1.  Go to the **[Releases](../../releases)** section.
-2.  Download the archive containing the `httpd` executable and the example `server.conf` file.
-3.  Set up a dummy website directory matching your configuration's root (e.g., `/tmp/www`):
+2.  Download the archive containing the `httpd` executable and the `tests/config_reader.sh` script.
+3.  Create a `test.conf` file at the root of the project:
 
-```bash
-mkdir -p /tmp/www
-echo "<h1>Hello World from HTTPd</h1>" > /tmp/www/index.html
+```ini
+[global]
+pid_file = test.pid
+log_file = test.log
+log = true
+
+[[vhosts]]
+server_name = localhost
+port = 8080
+ip = 127.0.0.1
+root_dir = .
+default_file = src/main.c
+```
+
+4.  Start the daemon: Use bash (not sh) to execute the wrapper and start the server in the background.
+
+```
 chmod +x httpd
-./httpd server.conf
+bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon start
+```
+Expected behavior: HTTP/1.1 200 OK response displaying the source code of main.c. The connection closes cleanly.
 
-# Test GET method
-curl -X GET http://localhost:4242/index.html
 
-# Test HEAD method (Fetch headers only)
-curl -I http://localhost:4242/index.html
+6. Stop or Restart the daemon:
+
+7. # To stop the server (sends SIGINT, removes test.pid)
+bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon stop
+
+# To restart the server (executes stop then start sequentially)
+bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon restart
+
