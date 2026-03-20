@@ -31,46 +31,45 @@
 
 A pre-compiled version of the server and its configuration wrapper are available for testing. Note that the C binary does not parse `.conf` files directly; it relies on a provided Bash wrapper script.
 
-1.  Go to the **[Releases](../../releases)** section.
-2.  Download the archive containing the `httpd` executable and the `tests/config_reader.sh` script.
-3.  Create a `test.conf` file at the root of the project:
+1. Go to the **[Releases](../../releases)** section.
+2. Download the archive containing the `httpd` executable, the `tests/config_reader.sh` script, and the `server.conf` file.
+3. **Terminal 1 - Setup:** Create a simple text file to serve.
 
-```ini
-[global]
-pid_file = test.pid
-log_file = test.log
-log = true
-
-[[vhosts]]
-server_name = localhost
-port = 8080
-ip = 127.0.0.1
-root_dir = .
-default_file = src/main.c
+```bash
+echo "Hello from the first terminal" > hello.txt
 ```
 
-4.  Start the daemon: Use bash (not sh) to execute the wrapper and start the server in the background.
+4.  Terminal 1 - Start the daemon: Use bash to execute the wrapper and start the server in the background.
 
-```
+```bash
 chmod +x httpd
-bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon start
+bash ./tests/config_reader.sh --path-bin ./httpd --path-config server.conf --daemon start
 ```
 *Expected behavior: The terminal hands back control immediately. A test.pid file is created containing the child process PID.*
 
-5. Test the HTTP GET request:
+5. Terminal 1 - Verify the process: Check that the daemon is actively running.
 
+```bash
+cat test.pid
+ps -p $(cat test.pid)
 ```
-curl -v [http://127.0.0.1:8080/src/main.c](http://127.0.0.1:8080/src/main.c)
-```
-*Expected behavior: HTTP/1.1 200 OK response displaying the source code of main.c. The connection closes cleanly.*
    
-6. Stop or Restart the daemon:
+6. Terminal 2 - Test the request: Open a second terminal and fetch the file you created.
 
+```bash
+curl -v [http://127.0.0.1:8080/hello.txt](http://127.0.0.1:8080/hello.txt)
 ```
-# To stop the server (sends SIGINT, removes test.pid)
-bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon stop
+*Expected behavior: HTTP/1.1 200 OK response displaying "Hello from the first terminal". The connection closes cleanly.*
 
-# To restart the server (executes stop then start sequentially)
-bash ./tests/config_reader.sh --path-bin ./httpd --path-config test.conf --daemon restart
+7. Terminal 1 - Stop the daemon: Go back to the first terminal and shut down the server.
+
+```bash
+bash ./tests/config_reader.sh --path-bin ./httpd --path-config server.conf --daemon stop
 ```
 
+8. Terminal 1 - Verify termination: Ensure the process is completely killed and the PID file is cleaned up.
+
+```bash
+cat test.pid
+# Expected: cat: test.pid: No such file or directory
+```
