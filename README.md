@@ -38,3 +38,12 @@ A pre-compiled version of the server is available for testing.
 ```bash
 mkdir -p /tmp/www
 echo "<h1>Hello World from HTTPd</h1>" > /tmp/www/index.html
+chmod +x httpd
+./httpd server.conf
+# Note: Use -a, -s, or -r flags if you want to test the daemon controls (start/stop/restart).
+
+# Test GET method
+curl -X GET http://localhost:4242/index.html
+
+# Test HEAD method (Fetch headers only)
+curl -I http://localhost:4242/index.html
