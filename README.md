@@ -9,14 +9,14 @@
 ## ✨ Implemented Features
 
 * **Network Communication:** Native implementation of TCP sockets using `socket`, `bind`, `listen`, and `accept` to handle incoming client connections.
-* **HTTP Protocol Handling:** Parses incoming HTTP requests and correctly formats HTTP responses (handling headers, status codes, and payloads). Currently supports `GET` methods.
-* **Daemonization:** The server can run as a background daemon process. It supports standard control commands via the CLI to `start`, `stop`, and `restart` the daemon smoothly.
-* **Configuration Parsing:** Dynamically loads settings from a configuration file. Supports defining log files, PID files, and setting up multiple Virtual Hosts (`[[vhosts]]`) with distinct server names and ports.
+* **HTTP Protocol Handling:** Parses incoming HTTP requests and correctly formats HTTP responses (handling headers, status codes, and payloads). Fully supports `GET` and `HEAD` methods.
+* **Daemonization:** The server can run as a background daemon process, detaching from the terminal to run autonomously.
+* **Configuration Parsing:** Dynamically loads settings from a `.conf` file. Supports defining log files, PID files, and setting up Virtual Hosts (`[[vhosts]]`) with distinct server names, ports, and root directories.
 * **Activity Logging:** Features a comprehensive logging module to trace incoming requests, server errors, and operational statuses.
 
 ## 🏗️ Technical Architecture
 
-1.  **Server Lifecycle & Daemon:** The `main` entry point parses CLI arguments and the configuration file. If requested, it forks the process to detach it from the terminal (daemon mode).
+1.  **Server Lifecycle & Daemon:** The `main` entry point parses CLI arguments and the configuration file. If daemon mode is triggered, it forks the process to detach it from the terminal.
 2.  **Socket & Event Loop:** The `server` module continuously listens on the configured ports. Upon accepting a connection, the payload is handed over to the HTTP module.
 3.  **HTTP Engine:** * `request.c`: Tokenizes and validates the incoming HTTP raw string.
     * `get.c`: Resolves the requested resource mapped to the server's root directory.
@@ -32,16 +32,9 @@
 A pre-compiled version of the server is available for testing.
 
 1.  Go to the **[Releases](../../releases)** section.
-2.  Download the archive containing the `httpd` executable and an example configuration file.
-3.  Open a terminal and start the server:
+2.  Download the archive containing the `httpd` executable and the example `server.conf` file.
+3.  Set up a dummy website directory matching your configuration's root (e.g., `/tmp/www`):
 
 ```bash
-chmod +x httpd
-# Start the server in daemon mode
-./httpd --start -c server.conf
-
-# Test it via curl or your browser
-curl http://localhost:4242/
-
-# Stop the server
-./httpd --stop
+mkdir -p /tmp/www
+echo "<h1>Hello World from HTTPd</h1>" > /tmp/www/index.html
