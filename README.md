@@ -57,7 +57,7 @@ ps -p $(cat test.pid)
 6. Terminal 2 - Test the request: Open a second terminal and fetch the file you created.
 
 ```bash
-curl -v [http://127.0.0.1:8080/hello.txt](http://127.0.0.1:8080/hello.txt)
+curl -v http://127.0.0.1:8080/hello.txt
 ```
 *Expected behavior: HTTP/1.1 200 OK response displaying "Hello from the first terminal". The connection closes cleanly.*
 
