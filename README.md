@@ -61,13 +61,20 @@ curl -v http://127.0.0.1:8080/hello.txt
 ```
 *Expected behavior: HTTP/1.1 200 OK response displaying "Hello from the first terminal". The connection closes cleanly.*
 
-7. Terminal 1 - Stop the daemon: Go back to the first terminal and shut down the server.
+7. Terminal 1 - Check the logs: Verify that the server successfully recorded the startup and the incoming HTTP request.
+
+```bash
+cat test.log
+```
+*Expected behavior: The output shows timestamped logs for the server initialization and the incoming GET request.*
+
+8. Terminal 1 - Stop the daemon: Go back to the first terminal and shut down the server.
 
 ```bash
 bash ./tests/config_reader.sh --path-bin ./httpd --path-config server.conf --daemon stop
 ```
 
-8. Terminal 1 - Verify termination: Ensure the process is completely killed and the PID file is cleaned up.
+9. Terminal 1 - Verify termination: Ensure the process is completely killed and the PID file is cleaned up.
 
 ```bash
 cat test.pid
