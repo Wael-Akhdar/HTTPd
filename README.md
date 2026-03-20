@@ -32,7 +32,7 @@
 A pre-compiled version of the server and its configuration wrapper are available for testing. Note that the C binary does not parse `.conf` files directly; it relies on a provided Bash wrapper script.
 
 1. Go to the **[Releases](../../releases)** section.
-2. Download the archive `HTTPd_provided_files` containing the `httpd` executable, the `tests/config_reader.sh` script, and the `server.conf` file.
+2. Download the archive `HTTPd_provided_files.tar.gz` containing the `httpd` executable, the `tests/config_reader.sh` script, and the `server.conf` file.
 3. **Terminal 1 - Setup:** Create a simple text file to serve.
 
 ```bash
