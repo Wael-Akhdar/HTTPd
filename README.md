@@ -31,10 +31,10 @@
 
 A pre-compiled version of the server and its configuration wrapper are available for testing. Note that the C binary does not parse `.conf` files directly; it relies on a provided Bash wrapper script.
 
-1. Go to the **[Releases](../../releases)** section and download the `HTTPd_provided_files.tar.gz` archive.
+1. Go to the **[Releases](../../releases)** section and download the `HTTPd-provided_files.tar.gz` archive.
 2. Extract the provided files:
 ```bash
-tar -xvf HTTPd_provided_files.tar.gz
+tar -xvf HTTPd-provided_files.tar.gz
 ```
 3. **Terminal 1 - Setup:** Create a simple text file to serve.
 
