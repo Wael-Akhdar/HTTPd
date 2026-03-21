@@ -80,6 +80,6 @@ bash ./tests/config_reader.sh --path-bin ./httpd --path-config server.conf --dae
 9. Terminal 1 - Verify termination: Ensure the process is completely killed and the PID file is cleaned up.
 
 ```bash
-cat test.pid
 # Expected: cat: test.pid: No such file or directory
+cat test.pid
 ```
