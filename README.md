@@ -27,6 +27,10 @@
 * **String Manipulation:** HTTP headers are plain text and highly variable. Developed a custom string utility module (`src/utils/string`) to safely split, trim, and parse incoming buffers without memory leaks or buffer overflows.
 * **Zombie Processes & Signal Handling:** Properly managing the daemon lifecycle requires precise handling of `fork` and UNIX signals (`sigaction`) to gracefully shut down the server and release ports without leaving orphaned processes.
 
+## 🛠️ Skills
+
+`C` · `Git` · `Web Servers`
+
 ## 🎯 How to test the project?
 
 A pre-compiled version of the server and its configuration wrapper are available for testing. Note that the C binary does not parse `.conf` files directly; it relies on a provided Bash wrapper script.
